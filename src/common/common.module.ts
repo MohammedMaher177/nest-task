@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { Module } from '@nestjs/common';
 
 @Module({
