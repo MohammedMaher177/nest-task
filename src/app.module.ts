@@ -12,6 +12,7 @@ import { TaskModule } from './task/task.module';
 import { Task, TaskSchema } from './schemas/task.schema';
 import { TaskService } from './task/task.service';
 import { TaskController } from './task/task.controller';
+import { AuthGuard } from './common/guards/auth.guard';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { TaskController } from './task/task.controller';
     TaskModule,
   ],
   controllers: [AppController, AuthController, TaskController],
-  providers: [AppService, AuthService, TaskService],
+  providers: [AppService, AuthService, TaskService, AuthGuard],
 })
 export class AppModule {}

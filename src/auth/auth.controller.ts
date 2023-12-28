@@ -8,6 +8,7 @@ import {
 } from './authValidation/auth.validation';
 import { AuthGuard } from '../common/guards/auth.guard';
 import { User } from 'src/schemas/user.schema';
+import { Public } from 'src/common/decorators/public.decorator';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -17,6 +18,7 @@ export class AuthController {
   signUp(@Body() body: SignupDTO): Promise<object | undefined> {
     return this.authService.signUp(body);
   }
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('signin')
   signIn(@Body() body: SigninDTO): Promise<object | undefined> {
