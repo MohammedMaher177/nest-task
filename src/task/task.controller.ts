@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -40,7 +41,15 @@ export class TaskController {
     @Request() request: Request & { user: User & { _id: string } },
     @Body() body: CreateTaskDTO,
     @Param('id') id: string,
-  ): Promise<Task | void> {
+  ): Promise<Task> {
     return await this.taskService.updateTask(request.user, id, body);
+  }
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async deleteTask(
+    @Request() request: Request & { user: User & { _id: string } },
+    @Param('id') id: string,
+  ): Promise<Task | any> {
+    return await this.taskService.deleteTask(request.user._id, id);
   }
 }

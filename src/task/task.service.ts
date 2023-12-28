@@ -1,10 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task } from 'src/schemas/task.schema';
 import { User } from 'src/schemas/user.schema';
 import { CreateTaskDTO, UpdateTaskDTO } from './taskValidation/task.validation';
-import { log } from 'console';
 
 @Injectable()
 export class TaskService {
@@ -31,7 +34,7 @@ export class TaskService {
     user: User & { _id: string },
     id: string,
     body: UpdateTaskDTO,
-  ): Promise<Task | void> {
+  ): Promise<Task> {
     const task = await this.findebyId(id);
     if (task.user.toString() === user._id.toString()) {
       return await this.taskModel.findByIdAndUpdate(id, body, {
@@ -40,5 +43,16 @@ export class TaskService {
     } else {
       throw new UnauthorizedException();
     }
+  }
+  async deleteTask(user_id: string, task_id: string): Promise<Task | any> {
+    const task = await this.taskModel.findById(task_id);
+
+    if (!task) {
+      throw new BadRequestException('Invalid Task ID');
+    }
+    if (user_id.toString() !== task.user.toString()) {
+      throw new UnauthorizedException();
+    }
+    return await this.taskModel.deleteOne({ _id: task_id });
   }
 }
