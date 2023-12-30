@@ -13,6 +13,7 @@ import { Task, TaskSchema } from './schemas/task.schema';
 import { TaskService } from './task/task.service';
 import { TaskController } from './task/task.controller';
 import { AuthGuard } from './common/guards/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -27,6 +28,15 @@ import { AuthGuard } from './common/guards/auth.guard';
     TaskModule,
   ],
   controllers: [AppController, AuthController, TaskController],
-  providers: [AppService, AuthService, TaskService, AuthGuard],
+  providers: [
+    AppService,
+    AuthService,
+    TaskService,
+    AuthGuard,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

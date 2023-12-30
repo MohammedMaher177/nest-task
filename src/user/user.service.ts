@@ -32,11 +32,10 @@ export class UserService {
     user: User & { _id: string },
     updates: UpdateDTO,
   ): Promise<(User & { _id: string }) | null> {
-    const existuser = await this.findByEmail(user.email);
-    console.log(existuser);
-
-    return await this.userModel.findByIdAndUpdate(user._id, updates, {
-      new: true,
-    });
+    return await this.userModel
+      .findByIdAndUpdate(user._id, updates, {
+        new: true,
+      })
+      .select('-password');
   }
 }

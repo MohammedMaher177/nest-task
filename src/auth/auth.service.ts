@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   async updateUser(
-    body: UpdateDTO & { _id?: string },
+    body: UpdateDTO & { _id?: string; email?: string },
     request: Request & { user: User & { _id: string } },
   ): Promise<object | undefined> {
     delete body['password'];

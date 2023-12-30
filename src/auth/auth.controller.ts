@@ -1,4 +1,4 @@
-import { Body, Controller, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Put, Request } from '@nestjs/common';
 import { Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
@@ -6,13 +6,13 @@ import {
   SignupDTO,
   UpdateDTO,
 } from './authValidation/auth.validation';
-import { AuthGuard } from '../common/guards/auth.guard';
 import { User } from 'src/schemas/user.schema';
 import { Public } from 'src/common/decorators/public.decorator';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('signup')
   signUp(@Body() body: SignupDTO): Promise<object | undefined> {
@@ -25,7 +25,6 @@ export class AuthController {
     return this.authService.signin(body);
   }
 
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Put('')
   UpdateUser(

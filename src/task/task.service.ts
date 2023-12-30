@@ -1,6 +1,6 @@
 import {
-  BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -17,7 +17,6 @@ export class TaskService {
   async findAll(
     request: Request & { user: User & { _id: string } },
   ): Promise<Task[]> {
-    console.log(request.user);
     return this.taskModel.find();
   }
   async findebyId(id: string): Promise<Task | undefined> {
@@ -48,7 +47,7 @@ export class TaskService {
     const task = await this.taskModel.findById(task_id);
 
     if (!task) {
-      throw new BadRequestException('Invalid Task ID');
+      throw new NotFoundException('Invalid Task ID');
     }
     if (user_id.toString() !== task.user.toString()) {
       throw new UnauthorizedException();
